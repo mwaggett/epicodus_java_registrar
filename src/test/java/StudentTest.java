@@ -92,7 +92,7 @@ public class StudentTest {
   }
 
   @Test
-  public void deleteName_changesNameInDatabase_true() {
+  public void delete_FromDatabase_true() {
     Student myStudent = new Student("Jim Bob", 2015, 9, 1);
     myStudent.save();
     myStudent.delete();
