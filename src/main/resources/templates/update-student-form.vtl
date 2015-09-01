@@ -1,0 +1,45 @@
+<h1>Edit Student </h1>
+
+<form action="/students/$student.getId()/update" method="post">
+  <label for="name">Student Name</label>
+  <input id="name" name="name" value="$student.getName()" type="text">
+  <br>
+  <label for="year">Enrollment Year</label>
+  <select id="year" name="year">
+    #foreach ($year in $years)
+      #if ($year == $student.getEnrollmentYear())
+        <option value=$year selected="selected">$year</option>
+      #else
+        <option value=$year>$year</option>
+      #end
+    #end
+  </select>
+  <label for="month">Enrollment Month</label>
+  <select id="month" name="month">
+    #foreach ($key in $months.keySet())
+      #if ($key == $student.getEnrollmentMonth())
+        <option value=$key selected="selected">$months.get($key)</option>
+      #else
+        <option value=$key>$months.get($key)</option>
+      #end
+    #end
+  </select>
+  <label for="day">Enrollment Day</label>
+  <select id="day" name="day">
+    #foreach($day in [1..31])
+      #if ($day == $student.getEnrollmentDay())
+        <option value=$day selected="selected">$day</option>
+      #else
+        <option value=$day>$day</option>
+      #end
+    #end
+  </select>
+  <br>
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+
+<form action="/students/$student.getId()/delete" method="post">
+  <button type="submit" class="btn btn-danger">DELETE STUDENT</button>
+</form>
+
+<a href="/students"> Go Back</a>

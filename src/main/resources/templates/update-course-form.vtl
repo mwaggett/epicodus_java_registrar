@@ -1,0 +1,16 @@
+<h1>Edit Course</h1>
+
+<form action="/courses/$course.getId()/update" method="post">
+  <label for ="coursenumber"> Course Number</label>
+  <input id="coursenumber" name="coursenumber" value="$course.getCourseNumber()" type="text">
+  <br>
+  <label for ="name"> Course Name</label>
+  <input id="name" name="name" value="$course.getName()" type="text">
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+
+<form action="/courses/$course.getId()/delete" method="post">
+  <button type="submit" class="btn btn-danger">DELETE COURSE</button>
+</form>
+
+<a href="/courses"> Go Back</a>

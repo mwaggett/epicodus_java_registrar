@@ -14,6 +14,26 @@ public class App {
 
   public static void main(String[] args) {
 
+    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+    ArrayList<Integer> years = new ArrayList<Integer>();
+    for (int year = currentYear - 5; year <= currentYear + 5; year++) {
+      years.add(year);
+    }
+
+    HashMap<Integer, String> months = new HashMap<Integer, String>();
+      months.put(1, "January");
+      months.put(2, "February");
+      months.put(3, "March");
+      months.put(4, "April");
+      months.put(5, "May");
+      months.put(6, "June");
+      months.put(7, "July");
+      months.put(8, "August");
+      months.put(9, "September");
+      months.put(10, "October");
+      months.put(11, "November");
+      months.put(12, "December");
+
     staticFileLocation("/public"); // Relative path for images, css, etc.
     String layout = "templates/layout.vtl";
 
@@ -34,26 +54,6 @@ public class App {
 
     get("/students/new", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-
-      int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-      ArrayList<Integer> years = new ArrayList<Integer>();
-      for (int year = currentYear - 5; year <= currentYear + 5; year++) {
-        years.add(year);
-      }
-
-      HashMap<Integer, String> months = new HashMap<Integer, String>();
-      months.put(1, "January");
-      months.put(2, "February");
-      months.put(3, "March");
-      months.put(4, "April");
-      months.put(5, "May");
-      months.put(6, "June");
-      months.put(7, "July");
-      months.put(8, "August");
-      months.put(9, "September");
-      months.put(10, "October");
-      months.put(11, "November");
-      months.put(12, "December");
 
       model.put("years", years);
       model.put("months", months);
@@ -87,6 +87,40 @@ public class App {
       model.put("template", "templates/student-courses.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    get("/students/:id/update", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Student student = Student.find(Integer.parseInt(request.params(":id")));
+
+      model.put("student", student);
+      model.put("years", years);
+      model.put("months", months);
+      model.put("template", "templates/update-student-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/students/:id/update", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Student toBeUpdated = Student.find(Integer.parseInt(request.params(":id")));
+      toBeUpdated.updateName(request.queryParams("name"));
+      toBeUpdated.updateEnrollmentDate(Integer.parseInt(request.queryParams("year")), Integer.parseInt(request.queryParams("month")), Integer.parseInt(request.queryParams("day")));
+
+      String redirectPath = String.format("/students/%d/courses", toBeUpdated.getId());
+      response.redirect(redirectPath);
+      return null;
+    });
+
+    post("/students/:id/delete", (request, response) ->{
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Student toBeDeleted = Student.find(Integer.parseInt(request.params(":id")));
+      toBeDeleted.delete();
+
+      response.redirect("/students");
+      return null;
+    });
 
     get("/students/:id/courses/add", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
@@ -203,6 +237,39 @@ public class App {
       response.redirect(redirectPath);
       return null;
     });
+
+    get("/courses/:id/update", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Course course = Course.find(Integer.parseInt(request.params(":id")));
+
+      model.put("course", course);
+      model.put("template", "templates/update-course-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/courses/:id/update", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Course toBeUpdated = Course.find(Integer.parseInt(request.params(":id")));
+      toBeUpdated.updateName(request.queryParams("name"));
+      toBeUpdated.updateCourseNumber(request.queryParams("coursenumber"));
+
+      String redirectPath = String.format("/courses/%d/students", toBeUpdated.getId());
+      response.redirect(redirectPath);
+      return null;
+    });
+
+    post("/courses/:id/delete", (request, response) ->{
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Course toBeDeleted = Course.find(Integer.parseInt(request.params(":id")));
+      toBeDeleted.delete();
+
+      response.redirect("/courses");
+      return null;
+    });
+
 
   }
 
