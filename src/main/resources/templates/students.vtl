@@ -1,0 +1,15 @@
+<h2>All Students</h2>
+
+<ul>
+  #foreach ($student in $students)
+    <li>
+      <a href="students/$student.getId()/courses">
+        $student.getName()
+      </a>
+    </li>
+  #end
+</ul>
+
+<a href="students/new">Add a New Student</a>
+<br>
+<a href="/">Go Back</a>

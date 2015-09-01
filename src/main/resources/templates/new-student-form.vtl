@@ -1,0 +1,29 @@
+<h1> Add a New Student </h1>
+
+<form action="/students/create" method="post">
+  <label for="name">Student Name</label>
+  <input id="name" name="name" type="text">
+  <br>
+  <label for="year">Enrollment Year</label>
+  <select id="year" name="year">
+    #foreach ($year in $years)
+      <option value=$year>$year</option>
+    #end
+  </select>
+  <label for="month">Enrollment Month</label>
+  <select id="month" name="month">
+    #foreach ($key in $months.keySet())
+      <option value=$key>$months.get($key)</option>
+    #end
+  </select>
+  <label for="day">Enrollment Day</label>
+  <select id="day" name="day">
+    #foreach($day in [1..31])
+    <option value=$day>$day</option>
+    #end
+  </select>
+  <br>
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+
+<a href="/students"> Go Back</a>
