@@ -1,0 +1,12 @@
+<h1>$course.getName()</h1>
+
+<p>Students Enrolled in $course.getCourseNumber():</p>
+<ul>
+  #foreach ($student in $students)
+    <li>$student.getName()</li>
+  #end
+</ul>
+<br>
+<a href="/courses/$course.getId()/students/add">Add students to this course</a>
+<br>
+<a href="/">Go Back</a>

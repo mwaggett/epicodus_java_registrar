@@ -76,6 +76,56 @@ public class App {
       return null;
     });
 
+    get("/students/:id/courses", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Student student = Student.find(Integer.parseInt(request.params(":id")));
+      List<Course> courses = student.getCourses();
+
+      model.put("student", student);
+      model.put("courses", courses);
+      model.put("template", "templates/student-courses.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/students/:id/courses/add", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Student student = Student.find(Integer.parseInt(request.params(":id")));
+
+      List<Course> courses = Course.all();
+      List<Course> enrolledCourses = student.getCourses();
+      ArrayList<Course> unenrolledCourses = new ArrayList<Course>();
+      for (Course course : courses) {
+        if (!(enrolledCourses.contains(course))) {
+          unenrolledCourses.add(course);
+        }
+      }
+
+      model.put("student", student);
+      model.put("unenrolledCourses", unenrolledCourses);
+      model.put("template", "templates/add-course-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/students/:id/courses/add", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Student student = Student.find(Integer.parseInt(request.params(":id")));
+
+      Object[] params = request.queryParams().toArray();
+      for (Object param : params) {
+        String courseId = (String) request.queryParams((String) param);
+        Course course = Course.find(Integer.parseInt(courseId));
+        student.addCourse(course);
+      }
+
+      String redirectPath = String.format("/students/%d/courses", student.getId());
+
+      response.redirect(redirectPath);
+      return null;
+    });
+
     get("/courses", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
 
@@ -104,6 +154,56 @@ public class App {
       response.redirect("/courses");
       return null;
     });
+
+    get("/courses/:id/students", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Course course = Course.find(Integer.parseInt(request.params(":id")));
+      List<Student> students = course.getStudents();
+
+      model.put("students", students);
+      model.put("course", course);
+      model.put("template", "templates/course-students.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/courses/:id/students/add", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Course course = Course.find(Integer.parseInt(request.params(":id")));
+      List<Student> students = Student.all();
+      List<Student> enrolledStudents = course.getStudents();
+      ArrayList<Student> unenrolledStudents = new ArrayList<Student>();
+      for (Student student : students) {
+        if (!enrolledStudents.contains(student)) {
+          unenrolledStudents.add(student);
+        }
+      }
+
+      model.put("course", course);
+      model.put("unenrolledStudents", unenrolledStudents);
+      model.put("template", "templates/add-student-form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/courses/:id/students/add", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      Course course = Course.find(Integer.parseInt(request.params(":id")));
+
+      Object[] params = request.queryParams().toArray();
+      for (Object param : params) {
+        String studentId = (String) request.queryParams((String) param);
+        Student student = Student.find(Integer.parseInt(studentId));
+        course.addStudent(student);
+      }
+
+      String redirectPath = String.format("/courses/%d/students", course.getId());
+
+      response.redirect(redirectPath);
+      return null;
+    });
+
   }
 
 }

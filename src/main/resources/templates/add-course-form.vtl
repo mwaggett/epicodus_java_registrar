@@ -1,0 +1,12 @@
+<h1>Add a Course </h1>
+<form action="/students/$student.getId()/courses/add" method="post">
+  #foreach ($course in $unenrolledCourses)
+  <input name="course$course.getId()" type="checkbox" value="$course.getId()">
+    $course.getCourseNumber() : $course.getName()
+  <br>
+#end
+<button type="submit" class="btn btn-success"> Submit</button>
+</form>
+<br>
+<br>
+<a href="/students/$student.getId()/courses">Go Back</a>

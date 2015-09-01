@@ -1,0 +1,14 @@
+<h1>$student.getName()</h1>
+
+<p><b>Enrollment Date:</b> $student.getEnrollmentDate()</p>
+
+<p><b>Courses:</b></p>
+<ul>
+  #foreach ($course in $courses)
+    <li>$course.getCourseNumber(): $course.getName()</li>
+  #end
+</ul>
+<br>
+<a href="/students/$student.getId()/courses/add">Add courses to student schedule</a>
+<br>
+<a href="/">Go Back</a>
