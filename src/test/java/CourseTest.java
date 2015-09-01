@@ -78,4 +78,18 @@ public class CourseTest {
     myCourse.delete();
     assertEquals(0, Course.all().size());
   }
+
+  @Test
+  public void getStudents_returnsAddedStudents() {
+    Student myStudent = new Student("Jim Bob", 2015, 9, 1);
+    myStudent.save();
+    Course firstInstance = new Course("Learn to Food","FOOD101");
+    firstInstance.save();
+    Course secondInstance = new Course("Learn About Herbs", "HERB201");
+    secondInstance.save();
+    firstInstance.addStudent(myStudent);
+    secondInstance.addStudent(myStudent);
+    assertTrue(firstInstance.getStudents().contains(myStudent));
+    assertEquals(myStudent, secondInstance.getStudents().get(0));
+  }
 }

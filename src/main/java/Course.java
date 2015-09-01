@@ -99,5 +99,24 @@ public class Course {
       return course;
     }
   }
+  public void addStudent(Student student) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO students_courses (student_id, course_id) VALUES (:student_id, :course_id)";
+      con.createQuery(sql)
+        .addParameter("student_id", student.getId())
+        .addParameter("course_id", id)
+        .executeUpdate();
+    }
+  }
+
+  public List<Student> getStudents() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT students.* FROM courses JOIN students_courses ON (courses.id = students_courses.course_id) JOIN students ON (students_courses.student_id = students.id) WHERE courses.id = :id";
+      List<Student> students = con.createQuery(sql)
+          .addParameter("id", id)
+          .executeAndFetch(Student.class);
+      return students;
+    }
+  }
 
 }

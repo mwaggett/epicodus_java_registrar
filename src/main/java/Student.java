@@ -116,8 +116,8 @@ public class Student {
   }
 
   public static List<Student> all() {
-    String sql = "SELECT * FROM students";
     try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM students";
       return con.createQuery(sql).executeAndFetch(Student.class);
     }
   }
@@ -129,6 +129,26 @@ public class Student {
           .addParameter("id", id)
           .executeAndFetchFirst(Student.class);
       return student;
+    }
+  }
+
+  public void addCourse(Course course) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO students_courses (student_id, course_id) VALUES (:student_id, :course_id)";
+      con.createQuery(sql)
+        .addParameter("student_id", id)
+        .addParameter("course_id", course.getId())
+        .executeUpdate();
+    }
+  }
+
+  public List<Course> getCourses() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT courses.* FROM students JOIN students_courses ON (students.id = students_courses.student_id) JOIN courses ON (students_courses.course_id = courses.id) WHERE students.id = :id";
+      List<Course> courses = con.createQuery(sql)
+          .addParameter("id", id)
+          .executeAndFetch(Course.class);
+      return courses;
     }
   }
 
