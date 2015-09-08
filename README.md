@@ -1,25 +1,28 @@
-# Application Name
+# University Registrar
 
-##### _{Brief description of application}, {Date of current version}_
+##### _Join Statements for Epicodus, 1 September 2015_
 
-#### By **Molly Waggett**
+#### By **Kallen Millner & Molly Waggett**
 
 ## Description
 
-{This is a detailed description of your application. Give as much detail as needed to explain what the application does, and any other information you want users or other developers to have. Do you want other developers to use this code in their apps? Talk about things like that here in simple terms.}
+This app allows a user to view students and courses in a university registrar. From the 'View Students' page, the user may add a new student or view details about a particular student, including name, enrollment date, and courses they're registered for, by clicking on their name. The user may also edit or delete a student. The 'View Courses' page is similar - the user may add a new course or view details about a particular course, including name, course number, and enrolled students. The user may also edit or delete a course.
 
 ## Setup
 
 * Set up the database in PostgreSQL by running the following commands in your terminal:
 ```
   psql
-  CREATE DATABASE database_name;
-  \c database_name;
-  CREATE TABLE table_name (id serial PRIMARY KEY, attribute varchar);
+  CREATE DATABASE registrar;
+  \c registrar;
+  CREATE TABLE students (id serial PRIMARY KEY, name varchar, enrollment_year int, enrollment_month int, enrollment_day int);
+  CREATE TABLE courses (id serial PRIMARY KEY, name varchar, course_number varchar);
+  CREATE TABLE students_courses (id serial PRIMARY KEY, student_id int, course_id int);
+  
 ```
 * If you wish to run tests, create a test database:
 ```
-  CREATE DATABASE database_name_test WITH TEMPLATE database_name;
+  CREATE DATABASE registrar_test WITH TEMPLATE registrar;
 ```
 * Clone this repository.
 * Using the command line, navigate to the top level of the cloned directory.
