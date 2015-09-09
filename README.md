@@ -1,6 +1,6 @@
 # University Registrar
 
-##### _Join Statements for Epicodus, 1 September 2015_
+##### _Join Statements practice for Epicodus, 1 September 2015_
 
 #### By **Kallen Millner & Molly Waggett**
 
@@ -45,7 +45,7 @@ This app allows a user to view students and courses in a university registrar. F
 
 ### Legal
 
-Copyright (c) 2015 **Molly Waggett**
+Copyright (c) 2015 **Kallen Millner & Molly Waggett**
 
 This software is licensed under the MIT license.
 
